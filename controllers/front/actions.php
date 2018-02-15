@@ -89,10 +89,18 @@ class MailalertsActionsModuleFrontController extends ModuleFrontController
 			$id_customer = (int)$context->customer->id;
 			$customer = new Customer($id_customer);
 			$customer_email = (string)$customer->email;
+			$customer_email = Tools::replaceAccentedChars($customer_email);
+			if (!Validate::isEmail($customer_email)) {
+				die('0');
+			}
 		}
 		else
 		{
 			$customer_email = (string)Tools::getValue('customer_email');
+			$customer_email = Tools::replaceAccentedChars($customer_email);
+			if (!Validate::isEmail($customer_email)) {
+				die('0');
+			}
 			$customer = $context->customer->getByEmail($customer_email);
 			$id_customer = (isset($customer->id) && ($customer->id != null)) ? (int)$customer->id : null;
 		}
